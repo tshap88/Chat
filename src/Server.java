@@ -15,7 +15,6 @@ public class Server {
 
             while ((str = in.readLine()) != null) {
                 System.out.println("Client: " + str);
-                out.println(str);
             }
 
         } catch (IOException e) {
