@@ -1,0 +1,7 @@
+!Server.java
+!Client.java
+out/
+src/
+.idea/
+chat.iml
+README.md
