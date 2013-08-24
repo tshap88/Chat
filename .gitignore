@@ -1,6 +1,9 @@
+!Server.java
+!Client.java
+!ServerImpRun.java
+!ClientImpRun.java
 out/
+src/
 .idea/
 chat.iml
 README.md
-Server11.java
-Client11.java
