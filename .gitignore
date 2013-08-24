@@ -1,7 +1,7 @@
 !Server.java
 !Client.java
-!ServerImpRun.java
-!ClientImpRun.java
+!src/ServerImpRun.java
+!src/ClientImpRun.java
 out/
 src/
 .idea/
