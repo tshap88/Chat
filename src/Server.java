@@ -2,19 +2,18 @@ import java.net.*;
 import java.io.*;
 
 public class Server {
+    private static int port = 5343;
     public static void main (String [] args) {
-        String str;
+
         ServerSocket ssocket;
         try {
-            ssocket = new ServerSocket(5343);
+            ssocket = new ServerSocket(port);
             System.out.println("Server is up");
-            Socket socket = ssocket.accept();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-
-            while ((str = in.readLine()) != null) {
-                System.out.println("Client: " + str);
+            while (true) {
+                Socket socket = ssocket.accept();
+                Thread threads = new Thread(new ServerImpRun(socket));
+                threads.start();
             }
 
         } catch (IOException e) {
