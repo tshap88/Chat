@@ -2,7 +2,7 @@ import java.net.*;
 import java.io.*;
 
 public class Server {
-    private static int port = 5343;
+    private static int port = 5343;                                     //same here - remove hard code
     public static void main (String [] args) {
 
         ServerSocket ssocket;
@@ -12,7 +12,7 @@ public class Server {
 
             while (true) {
                 Socket socket = ssocket.accept();
-                Thread threads = new Thread(new ServerImpRun(socket));
+                Thread threads = new Thread(new ServerImpRun(socket)); 
                 threads.start();
             }
 
