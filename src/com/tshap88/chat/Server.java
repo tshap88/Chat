@@ -3,13 +3,13 @@ import java.net.*;
 import java.io.*;
 
 public class Server {
-    private static int port = 5343;                                     //same here - remove hard code
+  //  private static int port = 5343;                                     //same here - remove hard code
     public static void main (String [] args) {
 
         ServerSocket ssocket;
         try {
-            ssocket = new ServerSocket(port);
-            System.out.println("Server is up");
+            ssocket = new ServerSocket(ConfFile.PORT);
+            System.out.println("Server is up: " + ssocket.getInetAddress().getHostName());
 
             while (true) {
                 Socket socket = ssocket.accept();

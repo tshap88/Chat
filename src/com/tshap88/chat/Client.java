@@ -3,13 +3,12 @@ import java.net.*;
 import java.io.*;
 
 public class Client {
-    private static int port = 3553;                                         //params are hard-coded
     public static void main(String[] args) {
         Socket socket;
         try {
             System.out.println("Сlient starting.");
-            socket = new Socket("localhost", port);                         //params are hard-coded
-            System.out.println("Сonnection to the server was successful.");
+            socket = new Socket(ConfFile.ADDRESS, ConfFile.PORT);
+           // System.out.println("Сonnection to the server:" + socket);
             Thread threadc = new Thread(new ClientImpRun(socket));
             threadc.start();
 
