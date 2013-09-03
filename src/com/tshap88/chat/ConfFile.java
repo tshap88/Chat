@@ -4,22 +4,25 @@ import java.io.*;
 import java.util.*;
 
 public class ConfFile {
-    public static int PORT;
-    public static String ADDRESS;
+    private static int PORT;
+    private static String ADDRESS;
 
     static {
         Properties properties = new Properties();
         try {
-            properties.load(new FileReader("/home/tania/chat/properties.txt"));
-        PORT = Integer.parseInt(properties.getProperty("PORT"));
+            properties.load(new FileReader("./properties.txt"));
+            PORT = Integer.parseInt(properties.getProperty("PORT"));
             ADDRESS = properties.getProperty("ADDRESS");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public static String getADDRESS() {
+        return ADDRESS;
+    }
 
-
-
-
+    public static int getPORT() {
+        return PORT;
+    }
 }

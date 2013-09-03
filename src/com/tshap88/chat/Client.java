@@ -1,4 +1,5 @@
 package com.tshap88.chat;
+
 import java.net.*;
 import java.io.*;
 
@@ -7,8 +8,8 @@ public class Client {
         Socket socket;
         try {
             System.out.println("Сlient starting.");
-            socket = new Socket(ConfFile.ADDRESS, ConfFile.PORT);
-           // System.out.println("Сonnection to the server:" + socket);
+            socket = new Socket(ConfFile.getADDRESS(), ConfFile.getPORT());
+            // System.out.println("Сonnection to the server:" + socket);
             Thread threadc = new Thread(new ClientImpRun(socket));
             threadc.start();
 

@@ -1,14 +1,15 @@
 package com.tshap88.chat;
+
 import java.net.*;
 import java.io.*;
 
 public class Server {
-  //  private static int port = 5343;                                     //same here - remove hard code
-    public static void main (String [] args) {
+
+    public static void main(String[] args) {
 
         ServerSocket ssocket;
         try {
-            ssocket = new ServerSocket(ConfFile.PORT);
+            ssocket = new ServerSocket(ConfFile.getPORT());
             System.out.println("Server is up: " + ssocket.getInetAddress().getHostName());
 
             while (true) {
