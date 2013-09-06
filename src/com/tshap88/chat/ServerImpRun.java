@@ -1,4 +1,5 @@
 package com.tshap88.chat;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +11,7 @@ public class ServerImpRun implements Runnable {
     BufferedReader in = null;
     PrintWriter out = null;
     String msgIn = null;
+
     public ServerImpRun(Socket socket) {
         this.socket = socket;
     }
@@ -22,24 +24,18 @@ public class ServerImpRun implements Runnable {
             System.out.println("User connect: " + socket.getInetAddress().getHostName());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
-            //out.println("Сonnection to the server was successful.");
-            while ( true ) {
+            while (true) {
                 msgIn = in.readLine();
+                if (msgIn.equals("out of the chat.")) {
+                    socket.close();
+                }
+
                 out.println(msgIn);
                 System.out.println("ok..");
                 System.out.println(msgIn);
                 out.flush();
-
-
-
-            /*    while (true) {
-                    inMessage = in.readLine();
-                    out = new PrintWriter(s.getOutputStream());    //
-                    out.println(inMessage);
-                    System.out.println("ok..");
-                    out.flush();
-               */
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
