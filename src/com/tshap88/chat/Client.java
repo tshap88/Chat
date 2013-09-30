@@ -10,8 +10,10 @@ public class Client {
             System.out.println("Сlient starting.");
             socket = new Socket(ConfFile.getADDRESS(), ConfFile.getPORT());
             // System.out.println("Сonnection to the server:" + socket);
-            Thread threadc = new Thread(new ClientImpRun(socket));
-            threadc.start();
+            Thread threadIn = new Thread(new Input(socket));
+            Thread threadOut = new Thread(new Output(socket));
+            threadIn.start();
+            threadOut.start();
 
         } catch (Exception x) {
             x.printStackTrace();
