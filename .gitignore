@@ -4,3 +4,5 @@ out/
 .idea/
 chat.iml
 README.md
+server/target
+client/target
