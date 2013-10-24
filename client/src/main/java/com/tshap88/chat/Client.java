@@ -15,7 +15,9 @@ public class Client {
             threadIn.start();
             threadOut.start();
 
-        } catch (Exception x) {
+        } catch (NullPointerException e) {
+            System.out.println("Connection with server lost.");
+        }catch (Exception x) {
             x.printStackTrace();
         }
     }
