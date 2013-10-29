@@ -1,6 +1,7 @@
-server/target
-client/target
-src/
 .idea/
 chat.iml
 README.md
+server/target
+server/server.iml
+client/target
+client/client.iml
