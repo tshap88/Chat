@@ -1,6 +1,5 @@
-!Server.java
-!Client.java
-out/
+server/target
+client/target
 src/
 .idea/
 chat.iml
