@@ -21,27 +21,35 @@ public class Input implements Runnable {
     public void run() {
         System.out.println("Input");
         try {
+            char[] buffer1 = new char[32];
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            char[] buffer = new char[32];
             while (true) {
+                String str = "";
+                char[] buff;
+                int charServer1;
 
-                int charServer = in.read(buffer);
+                do {
+                    charServer1 = in.read(buffer1);
+                    buff = new char[charServer1];
 
-                if (charServer > 0) {
-                    char[] buffer1 = new char[charServer];
-                    System.arraycopy(buffer, 0, buffer1, 0, charServer);
-                    if (!new String(buffer1).trim().equals("exit")) {
-                        System.out.print("This is in:" + new String(buffer1));
+                    if (charServer1 > 0) {
+                        System.arraycopy(buffer1, 0, buff, 0, charServer1);
+                        str = str + new String(buff);
                     }
-                    // System.out.print("This is in:" + new String(buffer1));
+
+                } while (buff[charServer1 - 1] != '\n');
+
+                if (!new String(buffer1).trim().equals("exit")) {
+                    System.out.println("This is in:" + str);
                 }
             }
-        } catch (NegativeArraySizeException e) {
+
+        } catch(NegativeArraySizeException e) {
             System.out.println("server disconnect");
-        } catch (SocketException e) {
+        } catch(SocketException e) {
             System.out.println("Bye");
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
-        }
     }
+}
 }
