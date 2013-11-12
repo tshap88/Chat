@@ -24,24 +24,20 @@ public class ServerImpRun implements Runnable {
     public void run() {
 
         try {
+
             System.out.println("User connect: " + socket.getInetAddress().getHostName());
             char[] buffer1 = new char[32];
+            int charServer1 = 0;
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            while (exit) {
+            while (exit || charServer1 > 0) {
                 String str = "";
-                char[] buff;
-                int charServer1;
+                charServer1 = in.read(buffer1);
+                char[] buff = new char[charServer1];
 
-                do {
-                    charServer1 = in.read(buffer1);
-                    buff = new char[charServer1];
-
-                    if (charServer1 > 0) {
-                        System.arraycopy(buffer1, 0, buff, 0, charServer1);
-                        str = str + new String(buff);
-                    }
-
-                } while (buff[charServer1 - 1] != '\n');
+                if (charServer1 > 0) {
+                    System.arraycopy(buffer1, 0, buff, 0, charServer1);
+                    str = str + new String(buff);
+                }
 
                 if (str.trim().equals("exit")) {
                     serverConnections.removeServerConnection(socket);
