@@ -13,7 +13,6 @@ public class ServerImpRun implements Runnable {
     ServerConnections serverConnections = new ServerConnections();
     private Socket socket;
     BufferedReader in = null;
-    boolean exit = true;
 
     public ServerImpRun(ServerConnections connection) {
         this.serverConnections = connection;
@@ -24,7 +23,7 @@ public class ServerImpRun implements Runnable {
     public void run() {
 
         try {
-
+            boolean exit = true;
             System.out.println("User connect: " + socket.getInetAddress().getHostName());
             char[] buffer1 = new char[32];
             int charServer1 = 0;
