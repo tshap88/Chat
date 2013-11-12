@@ -10,7 +10,7 @@ public class ConfFile {
     static {
         Properties properties = new Properties();
         try {
-            properties.load(new FileReader("/home/tania/chat/properties.txt"));
+            properties.load(new FileReader("../properties.txt"));
             PORT = Integer.parseInt(properties.getProperty("PORT"));
             ADDRESS = properties.getProperty("ADDRESS");
         } catch (IOException e) {
