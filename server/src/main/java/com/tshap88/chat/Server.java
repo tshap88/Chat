@@ -20,6 +20,8 @@ public class Server {
                 sc.addServerConnection(socket);
                 Thread threads = new Thread(new ServerImpRun(sc));
                 threads.start();
+
+                // the same comment here (@see Client.java)
             }
 
         } catch (IOException e) {

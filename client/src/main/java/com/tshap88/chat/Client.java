@@ -1,6 +1,10 @@
 package com.tshap88.chat;
 
 import java.net.*;
+import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 public class Client {
     public static void main(String[] args) {
@@ -13,6 +17,11 @@ public class Client {
             Thread threadOut = new Thread(new OutputThread(socket));
             threadIn.start();
             threadOut.start();
+
+            // you create new thread here. Note you can use
+            // thread pool: final ExecutorService executorService = Executors.newFixedThreadPool(2);
+            // and submit your Runnable there
+
 
         } catch (NullPointerException e) {
             System.out.println("Connection with server lost.");
