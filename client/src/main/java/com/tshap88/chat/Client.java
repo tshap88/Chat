@@ -12,17 +12,11 @@ public class Client {
         try {
             System.out.println("Сlient starting.");
             socket = new Socket(ConfFile.getADDRESS(), ConfFile.getPORT());
-            // System.out.println("Сonnection to the server:" + socket);
-            Thread threadIn = new Thread(new InputThread(socket));
-            Thread threadOut = new Thread(new OutputThread(socket));
-            threadIn.start();
-            threadOut.start();
 
-            // you create new thread here. Note you can use
-            // thread pool: final ExecutorService executorService = Executors.newFixedThreadPool(2);
-            // and submit your Runnable there
-
-
+            final ExecutorService executorService = Executors.newFixedThreadPool(2);
+            executorService.submit(new InputThread(socket));
+            executorService.submit(new OutputThread(socket));
+            executorService.shutdown();
         } catch (NullPointerException e) {
             System.out.println("Connection with server lost.");
         }catch (Exception x) {
