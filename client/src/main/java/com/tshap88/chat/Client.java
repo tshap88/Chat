@@ -2,6 +2,9 @@ package com.tshap88.chat;
 
 import java.net.*;
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 public class Client {
     public static void main(String[] args) {
@@ -9,12 +12,11 @@ public class Client {
         try {
             System.out.println("Сlient starting.");
             socket = new Socket(ConfFile.getADDRESS(), ConfFile.getPORT());
-            // System.out.println("Сonnection to the server:" + socket);
-            Thread threadIn = new Thread(new Input(socket));
-            Thread threadOut = new Thread(new Output(socket));
-            threadIn.start();
-            threadOut.start();
 
+            final ExecutorService executorService = Executors.newFixedThreadPool(2);
+            executorService.submit(new InputThread(socket));
+            executorService.submit(new OutputThread(socket));
+            executorService.shutdown();
         } catch (NullPointerException e) {
             System.out.println("Connection with server lost.");
         }catch (Exception x) {

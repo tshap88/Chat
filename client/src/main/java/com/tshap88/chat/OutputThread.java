@@ -8,20 +8,21 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class Output implements Runnable {
+public class OutputThread implements Runnable {
 
     private Socket socket = null;
     private PrintWriter out = null;
     private String msgOut = null;
-    private boolean exit = true;
 
-    public Output(Socket socket) {
+
+    public OutputThread(Socket socket) {
         this.socket = socket;
     }
 
     @Override
     public void run() {
         try {
+            boolean exit = true;
             out = new PrintWriter(socket.getOutputStream());
             BufferedReader bk = new BufferedReader(new InputStreamReader(System.in));
             while (exit) {
