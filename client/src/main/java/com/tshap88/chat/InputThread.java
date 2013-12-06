@@ -22,15 +22,15 @@ public class InputThread implements Runnable {
         System.out.println("Input");
         try {
             char[] buffer1 = new char[32];
-            int charServer1 = 0;
+            int charRead = 0;
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            while (true || charServer1 > 0) {
+            while (true || charRead > 0) {
                 String str = "";
-                charServer1 = in.read(buffer1);
-                char[] buff = new char[charServer1];
+                charRead = in.read(buffer1);
+                char[] buff = new char[charRead];
 
-                if (charServer1 > 0) {
-                    System.arraycopy(buffer1, 0, buff, 0, charServer1);
+                if (charRead > 0) {
+                    System.arraycopy(buffer1, 0, buff, 0, charRead);
                     str = str + new String(buff);
                 }
 
