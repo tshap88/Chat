@@ -22,22 +22,30 @@ public class OutputThread implements Runnable {
     @Override
     public void run() {
         try {
+            String username="";
             boolean exit = true;
             out = new PrintWriter(socket.getOutputStream());
             BufferedReader bk = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("Your username:");
+            username = bk.readLine();
             while (exit) {
                 msgOut = bk.readLine();
                 if (!msgOut.trim().equals("exit")) {
-                    System.out.println("This is out:" + msgOut);
-                    out.println(msgOut);
+                    System.out.println(username + ": " + msgOut);//"This is out:" + msgOut);
+                    out.println(username + ": " +msgOut);
                     out.flush();
                 } else {
-                    out.println(msgOut);
+                    out.println(username + ": " +msgOut);
                     out.flush();
                     exit = false;
-                    socket.close();
                 }
             }
+
+            out.close();
+            bk.close();
+            socket.close();
+
+
         } catch (NullPointerException e) {
             System.out.println("Connection with server has been interrupted");
         } catch (IOException e) {
