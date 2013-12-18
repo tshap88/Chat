@@ -13,7 +13,7 @@ public class ServerImpRun implements Runnable {
     ServerConnections serverConnections = new ServerConnections();
     private Socket socket;
     BufferedReader in = null;
-
+    String username ="";
     public ServerImpRun(ServerConnections connection) {
         this.serverConnections = connection;
         this.socket = connection.getLast();
@@ -23,10 +23,12 @@ public class ServerImpRun implements Runnable {
     public void run() {
 
         try {
-            System.out.println("User connect: " + socket.getInetAddress().getHostName());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            username = in.readLine();
+            System.out.println("User connect: " + username + " " + socket.getInetAddress().getHostName());
             char[] buffer1 = new char[32];
             int charRead = 0;
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
             while (!false || charRead > 0) {
                 String str = "";
                 charRead = in.read(buffer1);
@@ -42,7 +44,10 @@ public class ServerImpRun implements Runnable {
                     System.out.println("User is logged out of the chat");
                 } else {
                     System.out.println(str);//"Server in:" +
-                    System.out.println(serverConnections.listSocket.size());
+                  //  System.out.println(serverConnections.listSocket.size());
+
+
+
                     for (Socket socket1 : serverConnections.getListSocket()) {
                         if (!socket1.equals(socket)) {
                             PrintWriter out = new PrintWriter(socket1.getOutputStream());
