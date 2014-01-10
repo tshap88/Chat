@@ -33,7 +33,7 @@ public class ServerImpRun implements Runnable {
             char[] buffer1 = new char[32];
             int charRead = 0;
 
-            while (!false || charRead > 0) {
+            while ( !false || charRead > 0) {
                 String str = "";
                 charRead = in.read(buffer1);
                 char[] buff = new char[charRead];
