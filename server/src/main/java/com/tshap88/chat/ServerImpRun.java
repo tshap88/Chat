@@ -57,7 +57,7 @@ public class ServerImpRun implements Runnable {
                     System.out.println("User is logged out of the chat");
 
                 } else {
-                    System.out.println(str);//"Server in:" +
+                    System.out.println(str);
                     //  System.out.println(serverConnections.listSocket.size());
 
                     Set<Map.Entry<String, Socket>> set = serverConnections.getSetMap().entrySet();
@@ -67,7 +67,7 @@ public class ServerImpRun implements Runnable {
                             out.print(str);
                             out.flush();
 
-                            System.out.println(me.getKey() + "fffffffffffff" + name);
+                            System.out.println(me.getKey() + "  fffffffffffff  " + name);
                         }
                     }
 
