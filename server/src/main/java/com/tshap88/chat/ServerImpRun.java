@@ -32,7 +32,6 @@ public class ServerImpRun implements Runnable {
             username = in.readLine();
             serverConnections.putServerConnection(username.trim(), socket);
 
-            System.out.println(serverConnections.getSizeMap());
             System.out.println("User connect: " + username + " " + socket.getInetAddress().getHostName());
 
             char[] buffer1 = new char[32];
@@ -49,30 +48,32 @@ public class ServerImpRun implements Runnable {
                 }
 
                 // вычитываю из строки имя клиента которому нужно отправить сообщение
-                int num = str.indexOf(":");
-                String name = str.substring(0, num);
+                int num = str.lastIndexOf(":");
+                int num2 = str.indexOf(":");
+                String name = "";
+
+                if (num == num2) {
+                    name = str.substring(num2, num);
+                } else {
+                    name = str.substring(num2 + 1, num).trim();
+                }
 
                 if (str.trim().equals("exit")) {
                     serverConnections.removeServerConnection(socket);
                     System.out.println("User is logged out of the chat");
-
-                } else {
-                    System.out.println(str);
-                    //  System.out.println(serverConnections.listSocket.size());
+                } else if (!name.trim().equals(username) && name.trim().length() > 1) {
 
                     Set<Map.Entry<String, Socket>> set = serverConnections.getSetMap().entrySet();
                     for (Map.Entry<String, Socket> me : set) {
-                        if (me.getKey().equals(name)) {
+                        if (me.getKey().equals(name.trim())) {
                             PrintWriter out = new PrintWriter(me.getValue().getOutputStream());
-                            out.print(str);
+                            out.print(str.substring(0, num2+2) + str.substring(num + 1));
                             out.flush();
-
-                            System.out.println(me.getKey() + "  fffffffffffff  " + name);
                         }
                     }
 
-                    System.out.println("who: " + username);
-                    System.out.println("whom: " + name);
+                } else {
+                    System.out.println(str);
 
                     for (Socket socket1 : serverConnections.getListSocket()) {
                         if (!socket1.equals(socket)) {
