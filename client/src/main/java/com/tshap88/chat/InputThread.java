@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Scanner;
 
 public class InputThread implements Runnable {
 
@@ -24,6 +23,7 @@ public class InputThread implements Runnable {
             char[] buffer1 = new char[32];
             int charRead = 0;
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
             while (true || charRead > 0) {
                 String str = "";
                 charRead = in.read(buffer1);
@@ -35,7 +35,7 @@ public class InputThread implements Runnable {
                 }
 
                 if (!new String(buffer1).trim().equals("exit")) {
-                    System.out.println("This is in:" + str);
+                    System.out.println(str);
                 }
             }
 
