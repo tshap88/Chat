@@ -1,9 +1,6 @@
 package com.tshap88.chat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -15,9 +12,8 @@ public class ServerImpRun implements Runnable {
 
     private ServerConnections serverConnections = new ServerConnections();
     private Socket socket;
-    private BufferedReader in = null;
-    private String username = "";
-
+    private ObjectInputStream ois = null;
+    private Msg m;
 
     public ServerImpRun(ServerConnections connection) {
         this.serverConnections = connection;
@@ -28,40 +24,20 @@ public class ServerImpRun implements Runnable {
     public void run() {
 
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            username = in.readLine();
-            serverConnections.putServerConnection(username.trim(), socket);
 
-            System.out.println("User connect: " + username + " " + socket.getInetAddress().getHostName());
+            ois = new ObjectInputStream(socket.getInputStream());
+            serverConnections.putServerConnection(m.getUsername(), socket);
 
-            char[] buffer1 = new char[32];
-            int charRead = 0;
+            System.out.println("User connect: " + m.getUsername() + " " + socket.getInetAddress().getHostName());
 
             while (!false) {
-                String str = "";
-                charRead = in.read(buffer1);
-                char[] buff = new char[charRead];
 
-                if (charRead > 0) {
-                    System.arraycopy(buffer1, 0, buff, 0, charRead);
-                    str = str + new String(buff);
-                }
+                this.m = (Msg) ois.readObject();
 
-                // вычитываю из строки имя клиента которому нужно отправить сообщение
-                int num = str.lastIndexOf(":");
-                int num2 = str.indexOf(":");
-                String name = "";
-
-                if (num == num2) {
-                    name = str.substring(num2, num);
-                } else {
-                    name = str.substring(num2 + 1, num).trim();
-                }
-
-                if (str.trim().equals("exit")) {
+                if (m.getMsg().equals("exit")) {
                     serverConnections.removeServerConnection(socket);
                     System.out.println("User is logged out of the chat");
-                } else if (!name.trim().equals(username) && name.trim().length() > 1) {
+                } /*else if (!name.trim().equals(username) && name.trim().length() > 1) {
 
                     Set<Map.Entry<String, Socket>> set = serverConnections.getSetMap().entrySet();
                     for (Map.Entry<String, Socket> me : set) {
@@ -72,14 +48,14 @@ public class ServerImpRun implements Runnable {
                         }
                     }
 
-                } else {
-                    System.out.println(str);
+                } */else {
+                    System.out.println(m.getUsername() + " " + m.getMsg());
 
                     for (Socket socket1 : serverConnections.getListSocket()) {
                         if (!socket1.equals(socket)) {
-                            PrintWriter out = new PrintWriter(socket1.getOutputStream());
-                            out.print(str);
-                            out.flush();
+                            ObjectOutputStream oos = new ObjectOutputStream(socket1.getOutputStream());
+                            oos.writeObject(m);
+                            oos.flush();
                         }
                     }
                 }
@@ -93,6 +69,8 @@ public class ServerImpRun implements Runnable {
             serverConnections.removeServerConnection(socket);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 }

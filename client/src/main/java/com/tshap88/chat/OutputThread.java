@@ -1,19 +1,18 @@
 package com.tshap88.chat;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
 public class OutputThread implements Runnable {
 
     private Socket socket = null;
-    private PrintWriter out = null;
+    //private PrintWriter out = null;
+    private ObjectOutputStream oos = null;
     private String msgOut = null;
     private String username = "";
+    private Msg m;
 
     public OutputThread(Socket socket) {
         this.socket = socket;
@@ -23,29 +22,27 @@ public class OutputThread implements Runnable {
     public void run() {
         try {
             boolean exit = true;
-            out = new PrintWriter(socket.getOutputStream());
+            oos = new ObjectOutputStream(socket.getOutputStream());
             BufferedReader bk = new BufferedReader(new InputStreamReader(System.in));
 
             System.out.println("Your username:");
 
-            username = bk.readLine();
-            out.println(username);
-            out.flush();
+            m.setUsername(bk.readLine());
 
             while (exit) {
-                msgOut = bk.readLine();
+                m.setMsg(bk.readLine());
 
-                if (!msgOut.trim().equals("exit")) {
-                    out.println(username + ": " + msgOut);
-                    out.flush();
+                if (!m.getMsg().equals("exit")) {
+                    oos.writeObject(m);
+                    oos.flush();
                 } else {
-                    out.println(username + ": " + msgOut);
-                    out.flush();
+                    oos.writeObject(m);
+                    oos.flush();
                     exit = false;
                 }
             }
 
-            out.close();
+            oos.close();
             bk.close();
             socket.close();
 

@@ -1,16 +1,16 @@
 package com.tshap88.chat;
 
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
 public class InputThread implements Runnable {
 
     private Socket socket = null;
-    private BufferedReader in = null;
+    private ObjectInputStream ois = null;
+    private Msg m;
 
     public InputThread(Socket socket) {
         this.socket = socket;
@@ -18,33 +18,24 @@ public class InputThread implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Input");
+
         try {
-            char[] buffer1 = new char[32];
-            int charRead = 0;
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            ois = new ObjectInputStream(socket.getInputStream());
 
-            while (true || charRead > 0) {
-                String str = "";
-                charRead = in.read(buffer1);
-                char[] buff = new char[charRead];
+            while (true ) {
+                this.m = (Msg) ois.readObject();
 
-                if (charRead > 0) {
-                    System.arraycopy(buffer1, 0, buff, 0, charRead);
-                    str = str + new String(buff);
-                }
-
-                if (!new String(buffer1).trim().equals("exit")) {
-                    System.out.println(str);
+                if (! m.getMsg().equals("exit")) {
+                    System.out.println(m.getUsername() + " " + m.getMsg());
                 }
             }
 
-        } catch (NegativeArraySizeException e) {
-            System.out.println("server disconnect");
         } catch (SocketException e) {
             System.out.println("Bye");
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 }
