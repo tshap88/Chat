@@ -1,19 +1,18 @@
 package com.tshap88.chat;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
 public class OutputThread implements Runnable {
 
     private Socket socket = null;
-    private PrintWriter out = null;
+    //private PrintWriter out = null;
+    private ObjectOutputStream oos = null;
     private String msgOut = null;
-
+    private String username = "";
+    private Msg m;
 
     public OutputThread(Socket socket) {
         this.socket = socket;
@@ -23,21 +22,30 @@ public class OutputThread implements Runnable {
     public void run() {
         try {
             boolean exit = true;
-            out = new PrintWriter(socket.getOutputStream());
+            oos = new ObjectOutputStream(socket.getOutputStream());
             BufferedReader bk = new BufferedReader(new InputStreamReader(System.in));
+
+            System.out.println("Your username:");
+
+            m.setUsername(bk.readLine());
+
             while (exit) {
-                msgOut = bk.readLine();
-                if (!msgOut.trim().equals("exit")) {
-                    System.out.println("This is out:" + msgOut);
-                    out.println(msgOut);
-                    out.flush();
+                m.setMsg(bk.readLine());
+
+                if (!m.getMsg().equals("exit")) {
+                    oos.writeObject(m);
+                    oos.flush();
                 } else {
-                    out.println(msgOut);
-                    out.flush();
+                    oos.writeObject(m);
+                    oos.flush();
                     exit = false;
-                    socket.close();
                 }
             }
+
+            oos.close();
+            bk.close();
+            socket.close();
+
         } catch (NullPointerException e) {
             System.out.println("Connection with server has been interrupted");
         } catch (IOException e) {

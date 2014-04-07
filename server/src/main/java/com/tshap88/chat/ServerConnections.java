@@ -2,14 +2,24 @@ package com.tshap88.chat;
 
 
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.*;
 
 public class ServerConnections {
 
     ArrayList<Socket> listSocket = null;
+    Map<String, Socket> listMap = null;
 
     public ServerConnections() {
-       listSocket = new ArrayList<Socket>();
+        listSocket = new ArrayList<Socket>();
+        listMap = new LinkedHashMap<String, Socket>();
+    }
+
+    public synchronized void putServerConnection(String name, Socket socket) {
+        listMap.put(name, socket);
+    }
+
+    public synchronized Map<String, Socket> getSetMap() {
+        return listMap;
     }
 
     public synchronized ArrayList<Socket> getListSocket() {
